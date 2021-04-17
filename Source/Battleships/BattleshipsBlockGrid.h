@@ -38,6 +38,8 @@ public:
 	UPROPERTY(Category=Grid, EditAnywhere, BlueprintReadOnly)
 	float BlockSpacing;
 
+	TArray <class AShip*> shipArray;
+
 protected:
 	// Begin AActor interface
 	virtual void BeginPlay() override;

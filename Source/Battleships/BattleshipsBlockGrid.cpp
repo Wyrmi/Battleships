@@ -35,7 +35,7 @@ void ABattleshipsBlockGrid::BeginPlay()
 	// Number of blocks
 	const int32 NumBlocks = Size * Size;
 
-	//AShip* currentShipPTR;
+	AShip* currentShipPTR;
 
 	// Loop to spawn each block
 	for(int32 BlockIndex=0; BlockIndex<NumBlocks; BlockIndex++)
@@ -51,7 +51,9 @@ void ABattleshipsBlockGrid::BeginPlay()
 		// Spawn a block
 		ABattleshipsBlock* NewBlock = GetWorld()->SpawnActor<ABattleshipsBlock>(BlockLocation, FRotator(0,0,0));
 		if (BattleShips > 0) {
-			NewBlock->myShip = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
+			currentShipPTR = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
+			NewBlock->myShip = currentShipPTR;
+			shipArray.Emplace(currentShipPTR);
 			BattleShips--;
 		}
 		else {
@@ -76,6 +78,18 @@ void ABattleshipsBlockGrid::AddScore()
 
 	// Update text
 	ScoreText->SetText(FText::Format(LOCTEXT("ScoreFmt", "Moves used: {0}"), FText::AsNumber(Score)));
+
+	int blownShips = 0;
+	for (int32 Index = 0; Index != shipArray.Num(); ++Index)
+	{
+		if (shipArray[Index]->isBlown) {
+			blownShips++;
+		}
+	}
+	if (blownShips == shipArray.Num()) {
+		ScoreText->SetText(FText::Format(LOCTEXT("ScoreFmt", "You won! Moves used: {0}"), FText::AsNumber(Score)));
+	}
+
 }
 
 #undef LOCTEXT_NAMESPACE
