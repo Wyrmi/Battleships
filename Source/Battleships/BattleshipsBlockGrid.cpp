@@ -2,8 +2,11 @@
 
 #include "BattleshipsBlockGrid.h"
 #include "BattleshipsBlock.h"
+#include "Ship.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/World.h"
+//#include <vector>
+//using std::vector;
 
 #define LOCTEXT_NAMESPACE "PuzzleBlockGrid"
 
@@ -32,7 +35,9 @@ void ABattleshipsBlockGrid::BeginPlay()
 
 	// Number of blocks
 	const int32 NumBlocks = Size * Size;
-	int ships = 5;
+
+	AShip* myShip = nullptr;
+	//AShip* currentShip;
 
 	// Loop to spawn each block
 	for(int32 BlockIndex=0; BlockIndex<NumBlocks; BlockIndex++)
@@ -43,15 +48,19 @@ void ABattleshipsBlockGrid::BeginPlay()
 		// Make position vector, offset from Grid location
 		const FVector BlockLocation = FVector(XOffset, YOffset, 0.f) + GetActorLocation();
 
+		
+
 		// Spawn a block
 		ABattleshipsBlock* NewBlock = GetWorld()->SpawnActor<ABattleshipsBlock>(BlockLocation, FRotator(0,0,0));
-		if (ships > 0) {
-			NewBlock->hasShip = true;
-			ships--;
+		if (BattleShips > 0) {
+			NewBlock->myShip = myShip;
+			BattleShips--;
 		}
 		else {
-			NewBlock->hasShip = false;
+			NewBlock->myShip = nullptr;
 		}
+
+		
 
 		// Tell the block about its owner
 		if (NewBlock != nullptr)

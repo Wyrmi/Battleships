@@ -68,7 +68,7 @@ void ABattleshipsBlock::HandleClicked()
 		bIsActive = true;
 
 		// Change material
-		if (hasShip) {
+		if (myShip !=nullptr) {
 			BlockMesh->SetMaterial(0, RedMaterial);
 		}else{
 			BlockMesh->SetMaterial(0, OrangeMaterial);

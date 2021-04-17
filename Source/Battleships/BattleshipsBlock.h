@@ -28,7 +28,7 @@ public:
 
 	//does this block have a ship
 	UPROPERTY()
-	bool hasShip;
+	class AShip* myShip;
 
 	/** Pointer to white material used on the focused block */
 	UPROPERTY()

@@ -30,6 +30,10 @@ public:
 	UPROPERTY(Category=Grid, EditAnywhere, BlueprintReadOnly)
 	int32 Size;
 
+	/** Number of ships in grid */
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	int32 BattleShips;
+
 	/** Spacing of blocks */
 	UPROPERTY(Category=Grid, EditAnywhere, BlueprintReadOnly)
 	float BlockSpacing;
