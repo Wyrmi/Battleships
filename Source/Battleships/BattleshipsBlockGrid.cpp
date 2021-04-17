@@ -5,8 +5,7 @@
 #include "Ship.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/World.h"
-//#include <vector>
-//using std::vector;
+
 
 #define LOCTEXT_NAMESPACE "PuzzleBlockGrid"
 
@@ -36,8 +35,7 @@ void ABattleshipsBlockGrid::BeginPlay()
 	// Number of blocks
 	const int32 NumBlocks = Size * Size;
 
-	AShip* myShip = nullptr;
-	//AShip* currentShip;
+	//AShip* currentShipPTR;
 
 	// Loop to spawn each block
 	for(int32 BlockIndex=0; BlockIndex<NumBlocks; BlockIndex++)
@@ -53,7 +51,7 @@ void ABattleshipsBlockGrid::BeginPlay()
 		// Spawn a block
 		ABattleshipsBlock* NewBlock = GetWorld()->SpawnActor<ABattleshipsBlock>(BlockLocation, FRotator(0,0,0));
 		if (BattleShips > 0) {
-			NewBlock->myShip = myShip;
+			NewBlock->myShip = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
 			BattleShips--;
 		}
 		else {

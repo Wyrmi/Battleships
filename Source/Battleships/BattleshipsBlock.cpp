@@ -2,6 +2,7 @@
 
 #include "BattleshipsBlock.h"
 #include "BattleshipsBlockGrid.h"
+#include "Ship.h"
 #include "UObject/ConstructorHelpers.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -70,6 +71,7 @@ void ABattleshipsBlock::HandleClicked()
 		// Change material
 		if (myShip !=nullptr) {
 			BlockMesh->SetMaterial(0, RedMaterial);
+			myShip->BlowShip();
 		}else{
 			BlockMesh->SetMaterial(0, OrangeMaterial);
 		}

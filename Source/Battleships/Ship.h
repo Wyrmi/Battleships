@@ -23,6 +23,7 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	int lenght;
+	UPROPERTY(Category = Ship, EditAnywhere, BlueprintReadOnly)
 	bool isBlown;
 	void BlowShip() {
 		isBlown = true;
