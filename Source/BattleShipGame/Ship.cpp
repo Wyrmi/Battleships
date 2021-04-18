@@ -25,3 +25,14 @@ void AShip::Tick(float DeltaTime)
 
 }
 
+void AShip::BlowShip()
+{
+	isBlown = true;
+	if (blocks.Num() != 0) {
+		for (int32 Index = 0; Index != blocks.Num(); ++Index)
+		{
+			blocks[Index]->BlowBlock();
+		}
+	}
+}
+

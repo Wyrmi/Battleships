@@ -51,6 +51,9 @@ public:
 	UPROPERTY()
 	class ABattleShipGameBlockGrid* OwningGrid;
 
+	UFUNCTION()
+	void BlowBlock();
+
 	/** Handle the block being clicked */
 	UFUNCTION()
 	void BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked);

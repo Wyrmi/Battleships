@@ -56,6 +56,7 @@ void ABattleShipGameBlockGrid::BeginPlay()
 		ABattleShipGameBlock* NewBlock = GetWorld()->SpawnActor<ABattleShipGameBlock>(BlockLocation, FRotator(0, 0, 0));
 		if(continueShip){
 			NewBlock->myShip = currentShipPTR;
+			currentShipPTR->blocks.Emplace(NewBlock);
 			shipDone++;
 			if (ShipLenght <= shipDone) {
 				continueShip = false;
@@ -65,6 +66,7 @@ void ABattleShipGameBlockGrid::BeginPlay()
 		else if (BattleShips > 0) {
 			currentShipPTR = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
 			NewBlock->myShip = currentShipPTR;
+			currentShipPTR->blocks.Emplace(NewBlock);
 			shipArray.Emplace(currentShipPTR);
 			BattleShips--;
 			if(ShipLenght > 1)

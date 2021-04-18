@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "BattleShipGameBlock.h"
 #include "GameFramework/Actor.h"
 #include "Ship.generated.h"
 
@@ -22,9 +23,10 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UPROPERTY()
+	TArray <class ABattleShipGameBlock*> blocks;
 	UPROPERTY(Category = Ship, EditAnywhere, BlueprintReadOnly)
 	bool isBlown;
-	void BlowShip() {
-		isBlown = true;
-	}
+	UFUNCTION()
+	void BlowShip();
 };

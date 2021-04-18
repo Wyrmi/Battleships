@@ -49,6 +49,12 @@ ABattleShipGameBlock::ABattleShipGameBlock()
 	RedMaterial = ConstructorStatics.RedMaterial.Get();
 }
 
+void ABattleShipGameBlock::BlowBlock()
+{
+	BlockMesh->SetMaterial(0, RedMaterial);
+	bIsActive = true;
+}
+
 void ABattleShipGameBlock::BlockClicked(UPrimitiveComponent* ClickedComp, FKey ButtonClicked)
 {
 	HandleClicked();
@@ -69,7 +75,6 @@ void ABattleShipGameBlock::HandleClicked()
 
 		// Change material
 		if (myShip != nullptr) {
-			BlockMesh->SetMaterial(0, RedMaterial);
 			myShip->BlowShip();
 		}
 		else {
