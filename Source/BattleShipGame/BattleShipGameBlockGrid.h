@@ -39,8 +39,14 @@ public:
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	int32 BattleShips;
 
+	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
+	int32 ShipLenght;
+
 	UPROPERTY()
 	TArray <class AShip*> shipArray;
+
+	UPROPERTY()
+	int32 lastSpot;
 
 	/*UPROPERTY()
 	TArray <int32> shipLocations;*/

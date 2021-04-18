@@ -30,16 +30,17 @@ void ABattleShipGameBlockGrid::BeginPlay()
 {
 	const int32 NumBlocks = Size * Size;
 
-	AShip* currentShipPTR;
-
-	/*
-	for (int i; shipLocations.Num() < BattleShips; i++)
-	{
-		shipLocations.AddUnique(FMath::RandRange(0, NumBlocks -1));
-		i = 0;
+	if (NumBlocks < BattleShips * ShipLenght) {
+		BattleShips = 0;
 	}
-	shipLocations.Sort();
-	int locationIndex = 0;*/
+
+	AShip* currentShipPTR = nullptr;
+
+	//lastSpot = Size - (ShipLenght -1);
+
+	bool continueShip = false;
+	int32 shipDone = 1;
+
 	// Loop to spawn each block
 	for (int32 BlockIndex = 0; BlockIndex < NumBlocks; BlockIndex++)
 	{
@@ -53,12 +54,21 @@ void ABattleShipGameBlockGrid::BeginPlay()
 
 		// Spawn a block
 		ABattleShipGameBlock* NewBlock = GetWorld()->SpawnActor<ABattleShipGameBlock>(BlockLocation, FRotator(0, 0, 0));
-
-		if (BattleShips > 0) {
+		if(continueShip){
+			NewBlock->myShip = currentShipPTR;
+			shipDone++;
+			if (ShipLenght <= shipDone) {
+				continueShip = false;
+				shipDone = 1;
+			}
+		}
+		else if (BattleShips > 0) {
 			currentShipPTR = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
 			NewBlock->myShip = currentShipPTR;
 			shipArray.Emplace(currentShipPTR);
 			BattleShips--;
+			if(ShipLenght > 1)
+				continueShip = true;
 		}
 		else {
 			NewBlock->myShip = nullptr;
