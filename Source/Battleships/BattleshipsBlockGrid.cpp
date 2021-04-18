@@ -3,6 +3,7 @@
 #include "BattleshipsBlockGrid.h"
 #include "BattleshipsBlock.h"
 #include "Ship.h"
+#include "Math/UnrealMathUtility.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/World.h"
 
@@ -37,6 +38,14 @@ void ABattleshipsBlockGrid::BeginPlay()
 
 	AShip* currentShipPTR;
 
+	TArray <int32> shipLocations;
+	for (int i; shipLocations.Num() < BattleShips; i++)
+	{
+		shipLocations.AddUnique(FMath::RandRange(0, 99));
+		i = 0;
+	}
+	shipLocations.Sort();
+	int locationIndex = 0;
 	// Loop to spawn each block
 	for(int32 BlockIndex=0; BlockIndex<NumBlocks; BlockIndex++)
 	{
@@ -50,11 +59,12 @@ void ABattleshipsBlockGrid::BeginPlay()
 
 		// Spawn a block
 		ABattleshipsBlock* NewBlock = GetWorld()->SpawnActor<ABattleshipsBlock>(BlockLocation, FRotator(0,0,0));
-		if (BattleShips > 0) {
+
+		if (BlockIndex == shipLocations[locationIndex]) {
 			currentShipPTR = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
 			NewBlock->myShip = currentShipPTR;
 			shipArray.Emplace(currentShipPTR);
-			BattleShips--;
+			locationIndex++;
 		}
 		else {
 			NewBlock->myShip = nullptr;
@@ -75,7 +85,6 @@ void ABattleshipsBlockGrid::AddScore()
 {
 	// Increment score
 	Score++;
-
 	// Update text
 	ScoreText->SetText(FText::Format(LOCTEXT("ScoreFmt", "Moves used: {0}"), FText::AsNumber(Score)));
 
