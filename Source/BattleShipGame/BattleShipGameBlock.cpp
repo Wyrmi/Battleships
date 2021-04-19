@@ -49,6 +49,8 @@ ABattleShipGameBlock::ABattleShipGameBlock()
 	RedMaterial = ConstructorStatics.RedMaterial.Get();
 }
 
+//called when a ship that occupies this block is blown
+//sets material to red and makes the block unclickable
 void ABattleShipGameBlock::BlowBlock()
 {
 	BlockMesh->SetMaterial(0, RedMaterial);
@@ -74,6 +76,7 @@ void ABattleShipGameBlock::HandleClicked()
 		bIsActive = true;
 
 		// Change material
+		//if this block has a ship, that ship is blown up
 		if (myShip != nullptr) {
 			myShip->BlowShip();
 		}

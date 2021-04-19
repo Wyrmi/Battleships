@@ -23,10 +23,13 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	//all the blocks that the ship occupies in the grid
 	UPROPERTY()
 	TArray <class ABattleShipGameBlock*> blocks;
+	//has the player found the ship yet?
 	UPROPERTY(Category = Ship, EditAnywhere, BlueprintReadOnly)
 	bool isBlown;
+	//what is done when the player finds the ship
 	UFUNCTION()
 	void BlowShip();
 };

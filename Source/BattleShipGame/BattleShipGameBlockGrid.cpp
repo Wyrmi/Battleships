@@ -43,6 +43,7 @@ void ABattleShipGameBlockGrid::BeginPlay()
 	int32 shipDone = 1;
 	int32 line = 1;
 
+	//lists all the blocks that could have a ship in them
 	for (int32 i = 0; i < NumBlocks; i++)
 	{
 		if (i >= (line * Size)) {
@@ -51,9 +52,10 @@ void ABattleShipGameBlockGrid::BeginPlay()
 		if ((line * Size) - ShipLenght >= i)
 			shipLocations.Emplace(i);
 	}
+	//chooses random blocks from previous list that will have a ship in them during this game and makes sure ships longer than 1 block don't overlap
 	int32 randomInt;
 	for (int32 i = 0; currentShipLocations.Num() < BattleShips; i++) {
-		randomInt = FMath::RandRange(0, shipLocations.Num());
+		randomInt = FMath::RandRange(0, shipLocations.Num() - 1);
 		currentShipLocations.AddUnique(shipLocations[randomInt]);
 		shipLocations.Remove(currentShipLocations[i]);
 		for (size_t j = 1; j < ShipLenght; j++)
@@ -63,6 +65,7 @@ void ABattleShipGameBlockGrid::BeginPlay()
 		}
 	}
 	currentShipLocations.Sort();
+	//an extra zero is set to the end of the line just to be sure that the array isn't called out of bounds by accident
 	currentShipLocations.Emplace(0);
 	line = 1;
 	int32 madeShips = 0;
@@ -83,6 +86,7 @@ void ABattleShipGameBlockGrid::BeginPlay()
 		ABattleShipGameBlock* NewBlock = GetWorld()->SpawnActor<ABattleShipGameBlock>(BlockLocation, FRotator(0, 0, 0));
 
 		if (continueShip) {
+			//if a ship set in previous block is long enough to reach this block, this block will also have that ship
 			NewBlock->myShip = currentShipPTR;
 			currentShipPTR->blocks.Emplace(NewBlock);
 			shipDone++;
@@ -91,24 +95,20 @@ void ABattleShipGameBlockGrid::BeginPlay()
 				shipDone = 1;
 			}
 		}
-		else if ((line * Size) - BlockIndex < ShipLenght) {
-			NewBlock->myShip = nullptr;
-		}
 		else if (BlockIndex == currentShipLocations[madeShips]) {
+			//a ship will be created and given to this block if a ship should be spawned in this block
 			currentShipPTR = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
 			NewBlock->myShip = currentShipPTR;
 			currentShipPTR->blocks.Emplace(NewBlock);
 			shipArray.Emplace(currentShipPTR);
 			madeShips++;
-			//currentShipLocations.RemoveAt(0);
 			if(ShipLenght > 1)
 				continueShip = true;
 		}
 		else {
+			//the block will not have a ship assigned if the block should not have a ship
 			NewBlock->myShip = nullptr;
 		}
-
-
 
 		// Tell the block about its owner
 		if (NewBlock != nullptr)
@@ -120,11 +120,12 @@ void ABattleShipGameBlockGrid::BeginPlay()
 
 void ABattleShipGameBlockGrid::AddScore()
 {
-	// Increment score
+	//Score is used to track moves used by player
 	Score++;
 	// Update text
 	ScoreText->SetText(FText::Format(LOCTEXT("ScoreFmt", "Moves used: {0}"), FText::AsNumber(Score)));
 
+	//The game is won if player has found all the ships 
 	int blownShips = 0;
 	for (int32 Index = 0; Index != shipArray.Num(); ++Index)
 	{

@@ -25,6 +25,8 @@ void AShip::Tick(float DeltaTime)
 
 }
 
+//called when a block that the ship is on is clicked
+//sets isBlown to true and tells all the blocks that the ship is on that their ship has been found
 void AShip::BlowShip()
 {
 	isBlown = true;

@@ -39,15 +39,19 @@ public:
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	int32 BattleShips;
 
+	/** Lenght of ships in grid */
 	UPROPERTY(Category = Grid, EditAnywhere, BlueprintReadOnly)
 	int32 ShipLenght;
 
+	/** Pointer array containing all of ships in grid */
 	UPROPERTY()
 	TArray <class AShip*> shipArray;
 
+	/** indexes of the blocks where a ship can spawn*/
 	UPROPERTY()
 	TArray <int32> shipLocations;
 
+	/** indexes of the blocks where a ship will spawn*/
 	UPROPERTY()
 	TArray <int32> currentShipLocations;
 
