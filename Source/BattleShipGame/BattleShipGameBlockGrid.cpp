@@ -2,6 +2,7 @@
 
 #include "BattleShipGameBlockGrid.h"
 #include "BattleShipGameBlock.h"
+#include "Math/UnrealMathUtility.h"
 #include "Components/TextRenderComponent.h"
 #include "Engine/World.h"
 
@@ -38,11 +39,33 @@ void ABattleShipGameBlockGrid::BeginPlay()
 	}
 
 	AShip* currentShipPTR = nullptr;
-
 	bool continueShip = false;
 	int32 shipDone = 1;
 	int32 line = 1;
 
+	for (int32 i = 0; i < NumBlocks; i++)
+	{
+		if (i >= (line * Size)) {
+			line++;
+		}
+		if ((line * Size) - ShipLenght >= i)
+			shipLocations.Emplace(i);
+	}
+	int32 randomInt;
+	for (int32 i = 0; currentShipLocations.Num() < BattleShips; i++) {
+		randomInt = FMath::RandRange(0, shipLocations.Num());
+		currentShipLocations.AddUnique(shipLocations[randomInt]);
+		shipLocations.Remove(currentShipLocations[i]);
+		for (size_t j = 1; j < ShipLenght; j++)
+		{
+			shipLocations.Remove(currentShipLocations[i] + j);
+			shipLocations.Remove(currentShipLocations[i] - (j - 1));
+		}
+	}
+	currentShipLocations.Sort();
+	currentShipLocations.Emplace(0);
+	line = 1;
+	int32 madeShips = 0;
 	// Loop to spawn each block
 	for (int32 BlockIndex = 0; BlockIndex < NumBlocks; BlockIndex++)
 	{
@@ -71,12 +94,13 @@ void ABattleShipGameBlockGrid::BeginPlay()
 		else if ((line * Size) - BlockIndex < ShipLenght) {
 			NewBlock->myShip = nullptr;
 		}
-		else if (BattleShips > 0) {
+		else if (BlockIndex == currentShipLocations[madeShips]) {
 			currentShipPTR = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));
 			NewBlock->myShip = currentShipPTR;
 			currentShipPTR->blocks.Emplace(NewBlock);
 			shipArray.Emplace(currentShipPTR);
-			BattleShips--;
+			madeShips++;
+			//currentShipLocations.RemoveAt(0);
 			if(ShipLenght > 1)
 				continueShip = true;
 		}

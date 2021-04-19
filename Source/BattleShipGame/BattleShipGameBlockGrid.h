@@ -45,8 +45,11 @@ public:
 	UPROPERTY()
 	TArray <class AShip*> shipArray;
 
-	/*UPROPERTY()
-	TArray <int32> shipLocations;*/
+	UPROPERTY()
+	TArray <int32> shipLocations;
+
+	UPROPERTY()
+	TArray <int32> currentShipLocations;
 
 protected:
 	// Begin AActor interface
