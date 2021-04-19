@@ -36,10 +36,9 @@ void ABattleShipGameBlockGrid::BeginPlay()
 
 	AShip* currentShipPTR = nullptr;
 
-	//lastSpot = Size - (ShipLenght -1);
-
 	bool continueShip = false;
 	int32 shipDone = 1;
+	int32 line = 1;
 
 	// Loop to spawn each block
 	for (int32 BlockIndex = 0; BlockIndex < NumBlocks; BlockIndex++)
@@ -50,11 +49,14 @@ void ABattleShipGameBlockGrid::BeginPlay()
 		// Make position vector, offset from Grid location
 		const FVector BlockLocation = FVector(XOffset, YOffset, 0.f) + GetActorLocation();
 
-
+		if (BlockIndex >= (line * Size)) {
+			line++;
+		}
 
 		// Spawn a block
 		ABattleShipGameBlock* NewBlock = GetWorld()->SpawnActor<ABattleShipGameBlock>(BlockLocation, FRotator(0, 0, 0));
-		if(continueShip){
+
+		if (continueShip) {
 			NewBlock->myShip = currentShipPTR;
 			currentShipPTR->blocks.Emplace(NewBlock);
 			shipDone++;
@@ -62,6 +64,9 @@ void ABattleShipGameBlockGrid::BeginPlay()
 				continueShip = false;
 				shipDone = 1;
 			}
+		}
+		else if ((line * Size) - BlockIndex < ShipLenght) {
+			NewBlock->myShip = nullptr;
 		}
 		else if (BattleShips > 0) {
 			currentShipPTR = GetWorld()->SpawnActor<AShip>(FVector(0, 0, 0), FRotator(0, 0, 0));

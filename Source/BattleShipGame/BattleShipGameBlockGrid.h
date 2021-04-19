@@ -45,9 +45,6 @@ public:
 	UPROPERTY()
 	TArray <class AShip*> shipArray;
 
-	UPROPERTY()
-	int32 lastSpot;
-
 	/*UPROPERTY()
 	TArray <int32> shipLocations;*/
 
