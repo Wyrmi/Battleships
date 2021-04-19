@@ -30,8 +30,11 @@ void ABattleShipGameBlockGrid::BeginPlay()
 {
 	const int32 NumBlocks = Size * Size;
 
+	if (Size < ShipLenght) {
+		ShipLenght = Size;
+	}
 	if (NumBlocks < BattleShips * ShipLenght) {
-		BattleShips = 0;
+		BattleShips = 1;
 	}
 
 	AShip* currentShipPTR = nullptr;
